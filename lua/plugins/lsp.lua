@@ -65,6 +65,12 @@ return {
 
 				local client = vim.lsp.get_client_by_id(event.data.client_id)
 
+				-- just a dumb way to make tsserver not run when im on deno repos
+				if client ~= nil and client.name == "tsserver" then
+					if utils.is_in_deno() then
+						client.stop()
+					end
+				end
 				-- enabling word highlight on hover
 				if utils.client_supports(client, lsp_proto_methods.textDocument_documentHighlight, event.buf) then
 					-- enabling highlight on hover
@@ -106,7 +112,7 @@ return {
 					[vim.diagnostic.severity.HINT] = "󰌶 ",
 				},
 			},
-			virtual_lines = {
+			virtual_text = {
 				current_line = true,
 				source = "if_many",
 				spacing = 2,

@@ -34,7 +34,5 @@ return {
 		utils.map("<leader>pf", builtin.find_files, "[P]roject [F]iles")
 		utils.map("<leader>sg", builtin.live_grep, "[S]earch by [G]rep")
 		utils.map("<leader>sw", builtin.grep_string, "[S]earch current [W]ord")
-
-		-- vim.keymap.set("n", "<leader>sh", builtin.help_tags, { desc = "[S]earch [H]elp" })
 	end,
 }
