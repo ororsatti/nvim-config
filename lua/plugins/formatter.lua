@@ -1,3 +1,5 @@
+local utils = require("utils")
+
 local formatters = {
 	lua = { "stylua" },
 

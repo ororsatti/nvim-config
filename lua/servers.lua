@@ -34,13 +34,13 @@ S.lua_ls = {
 
 S.tsserver = {
 	root_dir = nvim_lsp.util.root_pattern("package.json"),
-	exclude = { "**/node_modules/**", "**supabase/functions/**" },
+	exclude = { "**/node_modules/**", "**/supabase/functions/**" },
 }
 
 S.denols = {
 	auto_install = true,
 	root_dir = nvim_lsp.util.root_pattern("deno.json", "import_map.json", "deno.jsonc"),
-	options = {
+	init_options = {
 		enable = true,
 		unstable = true,
 		suggest = {

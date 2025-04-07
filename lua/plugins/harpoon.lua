@@ -9,7 +9,7 @@ return {
 
 		harpoon:setup()
 
-		local harpoon_keys = { "T", "G", "M", "N" }
+		local harpoon_keys = { "t", "g", "s", "a" }
 
 		utils.map("<leader>a", function()
 			harpoon:list():add()
@@ -20,7 +20,10 @@ return {
 		end, "Open harpoon's quick menu")
 
 		for i, v in ipairs(harpoon_keys) do
-			utils.map(string.format("<C-%s>", v), function()
+			local keycomb = string.format("<leader>h%s", v)
+
+			utils.map(keycomb, function()
+				print(string.format("Go to item numeber %d", i))
 				harpoon:list():select(i)
 			end, string.format("Go to item numeber %d", i))
 		end

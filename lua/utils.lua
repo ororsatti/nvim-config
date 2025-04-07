@@ -17,4 +17,11 @@ function M.client_supports(client, method, bufnr)
 	return false
 end
 
+function M.is_in_deno()
+	local lspconfig = require("lspconfig")
+	local is_in_deno_repo = lspconfig.util.root_pattern("deno.json", "import_map.json", "deno.jsonc")(vim.fn.getcwd())
+	local is_in_deno_part_of_repo = vim.fn.match(vim.fn.expand("%:p"), "supabase/functions") > -1
+	return is_in_deno_repo or is_in_deno_part_of_repo
+end
+
 return M
