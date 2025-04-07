@@ -20,10 +20,9 @@ return {
 		end, "Open harpoon's quick menu")
 
 		for i, v in ipairs(harpoon_keys) do
-			local keycomb = string.format("<leader>h%s", v)
+			local keycomb = string.format("<leader>f%s", v)
 
 			utils.map(keycomb, function()
-				print(string.format("Go to item numeber %d", i))
 				harpoon:list():select(i)
 			end, string.format("Go to item numeber %d", i))
 		end
