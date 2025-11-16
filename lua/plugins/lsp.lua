@@ -1,6 +1,17 @@
 local utils = require("utils")
 local lsp_proto_methods = vim.lsp.protocol.Methods
 
+local border = {
+	"┌",
+	"─",
+	"┐",
+	"│",
+	"┘",
+	"─",
+	"└",
+	"│",
+}
+
 return {
 	"neovim/nvim-lspconfig",
 	dependencies = {
@@ -93,6 +104,15 @@ return {
 					local server = servers[server_name] or {}
 
 					server.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {})
+					server.handlers = vim.tbl_deep_extend("force", {
+						["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { winborder = border }),
+						["textDocument/signatureHelp"] = vim.lsp.with(
+							vim.lsp.handlers.signature_help,
+							{ winborder = border }
+						),
+					})
+
+					print(server)
 
 					lspconfig[server_name].setup(server)
 				end,
@@ -159,7 +179,7 @@ return {
 		vim.diagnostic.config({
 			severity_sort = true,
 			underline = { severity = vim.diagnostic.severity.ERROR },
-			float = { border = "rounded", source = "if_many" },
+			float = { winborder = border, source = "if_many" },
 			signs = {
 				text = {
 					[vim.diagnostic.severity.ERROR] = "󰅚 ",

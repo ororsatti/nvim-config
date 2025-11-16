@@ -3,10 +3,10 @@ local utils = require("utils")
 local formatters = {
 	lua = { "stylua" },
 
-	javascript = { "prettier", "eslint" },
-	javascriptreact = { "prettier", "eslint" },
-	typescript = { "prettier", "eslint" },
-	typescriptreact = { "prettier", "eslint" },
+	javascript = { "prettierd", "eslint" },
+	javascriptreact = { "prettierd", "eslint" },
+	typescript = { "prettierd", "eslint" },
+	typescriptreact = { "prettierd", "eslint" },
 
 	go = { "gofumpt" },
 }
