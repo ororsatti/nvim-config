@@ -1,20 +1,7 @@
 return {
-	"rebelot/kanagawa.nvim",
-	lazy = false,
-	priority = 1000,
-	config = function()
-		require("kanagawa").setup({
-			-- enable compiling the colorscheme
-			compile = true,
-			-- enable undercurls
-			undercurl = true,
-			commentStyle = { italic = true },
-			keywordStyle = { italic = true },
-			statementStyle = { bold = true },
-			transparent = true,
-		})
-
-		vim.cmd("colorscheme kanagawa-dragon")
-		print("testing test")
+	"blazkowolf/gruber-darker.nvim",
+	priority = 1000, -- Make sure to load this before all the other start plugins.
+	init = function()
+		vim.cmd.colorscheme("gruber-darker")
 	end,
 }

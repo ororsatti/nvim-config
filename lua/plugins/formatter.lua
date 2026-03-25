@@ -8,6 +8,8 @@ local formatters = {
 	typescript = { "prettierd", "eslint" },
 	typescriptreact = { "prettierd", "eslint" },
 
+	json = { "prettierd" },
+
 	go = { "gofumpt" },
 }
 

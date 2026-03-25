@@ -2,14 +2,14 @@ local utils = require("utils")
 local lsp_proto_methods = vim.lsp.protocol.Methods
 
 local border = {
-	"┌",
-	"─",
-	"┐",
-	"│",
-	"┘",
-	"─",
-	"└",
-	"│",
+	{ "┌", "FloatBorder" },
+	{ "─", "FloatBorder" },
+	{ "┐", "FloatBorder" },
+	{ "│", "FloatBorder" },
+	{ "┘", "FloatBorder" },
+	{ "─", "FloatBorder" },
+	{ "└", "FloatBorder" },
+	{ "│", "FloatBorder" },
 }
 
 return {
@@ -25,6 +25,10 @@ return {
 		local lspconfig = require("lspconfig")
 
 		S = {}
+
+		S.postgres_lsp = {
+			cmd = { "postgres-language-server", "lsp-proxy" },
+		}
 
 		S.clangd = {
 			cmd = {
@@ -56,28 +60,9 @@ return {
 			},
 		}
 
-		S.tsserver = {
+		S.ts_ls = {
 			root_dir = lspconfig.util.root_pattern("package.json"),
 			exclude = { "**/node_modules/**", "**/supabase/functions/**" },
-		}
-
-		S.denols = {
-			auto_install = true,
-			root_dir = lspconfig.util.root_pattern("deno.json", "import_map.json", "deno.jsonc"),
-			init_options = {
-				enable = true,
-				unstable = true,
-				suggest = {
-					imports = {
-						hosts = {
-							["https://deno.land"] = true,
-							["https://esm.sh"] = true,
-							["https://denopkg.com"] = true,
-							["https://deno.land/x"] = true,
-						},
-					},
-				},
-			},
 		}
 
 		local mason_installer = require("mason-tool-installer")
@@ -86,7 +71,7 @@ return {
 		local capabilities = vim.lsp.protocol.make_client_capabilities()
 		capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
 
-		local ensure_installed = vim.tbl_keys(servers or {})
+		local ensure_installed = vim.tbl_keys(S or {})
 
 		vim.list_extend(ensure_installed, {
 			"stylua",
@@ -101,18 +86,16 @@ return {
 			automatic_installation = false,
 			handlers = {
 				function(server_name)
-					local server = servers[server_name] or {}
+					local server = S[server_name] or {}
 
 					server.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {})
-					server.handlers = vim.tbl_deep_extend("force", {
-						["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { winborder = border }),
-						["textDocument/signatureHelp"] = vim.lsp.with(
-							vim.lsp.handlers.signature_help,
-							{ winborder = border }
-						),
-					})
-
-					print(server)
+					-- server.handlers = {
+					-- 	["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = border }),
+					-- 	["textDocument/signatureHelp"] = vim.lsp.with(
+					-- 		vim.lsp.handlers.signature_help,
+					-- 		{ border = border }
+					-- 	),
+					-- }
 
 					lspconfig[server_name].setup(server)
 				end,
@@ -138,6 +121,11 @@ return {
 				utils.map("<leader>ws", builtin.lsp_dynamic_workspace_symbols, "[W]orkspace [S]ymbols")
 				utils.map("<leader>rn", vim.lsp.buf.rename, "[R]e[n]ame")
 				utils.map("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction", { "n", "x" })
+				utils.map("K", function()
+					vim.lsp.buf.hover({
+						border = "rounded",
+					})
+				end, "[K]Hover", "n", { buffer = event.buffer })
 
 				local client = vim.lsp.get_client_by_id(event.data.client_id)
 
@@ -179,7 +167,7 @@ return {
 		vim.diagnostic.config({
 			severity_sort = true,
 			underline = { severity = vim.diagnostic.severity.ERROR },
-			float = { winborder = border, source = "if_many" },
+			float = { border = border, source = "if_many" },
 			signs = {
 				text = {
 					[vim.diagnostic.severity.ERROR] = "󰅚 ",

@@ -1,7 +1,7 @@
 M = {}
-function M.map(keycomb, action, description, mode)
+function M.map(keycomb, action, description, mode, opts)
 	mode = mode or "n"
-	vim.keymap.set(mode, keycomb, action, { desc = description })
+	vim.keymap.set(mode, keycomb, action, vim.tbl_extend("force", { desc = description }, opts or {}))
 end
 
 function M.client_supports(client, method, bufnr)
